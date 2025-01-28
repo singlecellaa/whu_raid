@@ -19,7 +19,6 @@ class TeamSerializer(serializers.ModelSerializer):
     def get_members(self,obj):
         members_ = obj.user_set.all()
         return UserSerializer(members_,many=True).data
-    
 class TeamView(ModelViewSet):
     queryset = Team.objects
     serializer_class = TeamSerializer
@@ -88,3 +87,4 @@ class QuitTeamView(ModelViewSet):
                 return Response(serializer.data)
         else:
             return Response({"error": "用户不在任何队伍中"}, status=status.HTTP_400_BAD_REQUEST)
+
