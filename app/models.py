@@ -9,5 +9,5 @@ class User(models.Model):
     
 class Team(models.Model):
     name = models.CharField(max_length=10)
-    leader = models.OneToOneField(User,on_delete=models.DO_NOTHING,related_name="leader")
+    leader_id = models.CharField(max_length=13,validators=[MaxLengthValidator(13),MinLengthValidator(13)])
     
