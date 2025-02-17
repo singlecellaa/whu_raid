@@ -10,4 +10,5 @@ class User(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=10)
     leader_id = models.CharField(max_length=13,validators=[MaxLengthValidator(13),MinLengthValidator(13)])
-    
+    reservation_time = models.DateTimeField(null=True,blank=True)
+    start_time = models.DateTimeField(null=True,blank=True)

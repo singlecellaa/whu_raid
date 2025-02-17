@@ -88,3 +88,21 @@ class QuitTeamView(ModelViewSet):
         else:
             return Response({"error": "用户不在任何队伍中"}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ReserveStartTimeSerializer(serializers.ModelSerializer):
+    reservation_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M')
+    class Meta: 
+        model = Team
+        fields = ['id','reservation_time']
+class ReserveStartTimeView(ModelViewSet):
+    queryset = Team.objects
+    serializer_class = ReserveStartTimeSerializer
+    
+class StartTimeSerializer(serializers.ModelSerializer):
+    start_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M')
+    class Meta:
+        model = Team
+        fields = ['id','start_time']
+class StartTimeView(ModelViewSet):
+    queryset = Team.objects
+    serializer_class = StartTimeSerializer
