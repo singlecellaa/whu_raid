@@ -17,7 +17,9 @@ Including another URLconf
 from django.urls import path
 from app.view import UserView,TeamView,EnterTeamView,QuitTeamView,ReserveStartTimeView,StartTimeView
 urlpatterns = [
-    path('v6/register',UserView.as_view({'get':'list','post':'create'})),
+    path('v6/register',UserView.as_view({'post':'create'})),
+    path('v6/user',UserView.as_view({'get':'list'})),
+    path('v6/user/<int:pk>',UserView.as_view({'get':'retrieve'})),
     path('v6/team',TeamView.as_view({'get':'list','post':'create'})),
     path('v6/team/<int:pk>',TeamView.as_view({'get':'retrieve','delete':'destroy'})),
     path('v6/enter_team/<int:pk>',EnterTeamView.as_view({'get':'retrieve','put':'partial_update'})),
