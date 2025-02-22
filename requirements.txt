@@ -9,3 +9,4 @@ sqlparse==0.5.1
 tzdata==2024.1
 urllib3==2.3.0
 wheel==0.43.0
+Version==4.7.0
