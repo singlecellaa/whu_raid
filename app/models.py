@@ -12,3 +12,4 @@ class Team(models.Model):
     leader_id = models.CharField(max_length=13,validators=[MaxLengthValidator(13),MinLengthValidator(13)],unique=True)
     reservation_time = models.DateTimeField(null=True,blank=True)
     start_time = models.DateTimeField(null=True,blank=True)
+    position = models.CharField(max_length=10,default='桂操')

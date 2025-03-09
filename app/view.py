@@ -115,3 +115,11 @@ class StartTimeSerializer(serializers.ModelSerializer):
 class StartTimeView(ModelViewSet):
     queryset = Team.objects
     serializer_class = StartTimeSerializer
+    
+class PositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ['id','position']
+class PositionView(ModelViewSet):
+    queryset = Team.objects
+    serializer_class = PositionSerializer
