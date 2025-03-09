@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
 from rest_framework import serializers,status
 from .models import User,Team 
 from rest_framework.response import Response
@@ -41,29 +42,37 @@ class TeamView(ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
-class EnterTeamSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id","team"]
-class EnterTeamView(ModelViewSet):
-    queryset = User.objects
-    serializer_class = EnterTeamSerializer
-    def partial_update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        
-        new_team_id = serializer.validated_data.get('team').id
-        if new_team_id:
-            new_team = Team.objects.get(pk=new_team_id)
-            if new_team.user_set.count() >= 4:
-                return Response({"error": "队伍已满四人"}, status=status.HTTP_400_BAD_REQUEST)
-            if instance.team:
-                return Response({"error": "已在一个队伍中"}, status=status.HTTP_400_BAD_REQUEST)
-            
-        serializer.save()
-        return Response(serializer.data)
-    
+class EnterTeamSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    team_name = serializers.CharField()
+
+class EnterTeamView(APIView):
+    def put(self, request, *args, **kwargs):
+        serializer = EnterTeamSerializer(data=request.data)
+        if serializer.is_valid():
+            user_id = serializer.validated_data['user_id']
+            team_name = serializer.validated_data['team_name']
+            try:
+                user = User.objects.get(pk=user_id)
+                team = Team.objects.get(name=team_name)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+            except Team.DoesNotExist:
+                return Response({"error": "Team not found"}, status=status.HTTP_404_NOT_FOUND)
+
+            if team.user_set.count() >= 4:
+                return Response({"error": "Team is full"}, status=status.HTTP_400_BAD_REQUEST)
+            if user.team:
+                return Response({"error": "User is already in a team"}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                user.team = team
+                user.save()
+                return Response({"message": "User added to team successfully"}, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"error": f"Failed to add user to team: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 class QuitTeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

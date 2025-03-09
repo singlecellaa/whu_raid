@@ -19,10 +19,10 @@ from app.view import UserView,TeamView,EnterTeamView,QuitTeamView,ReserveStartTi
 urlpatterns = [
     path('v6/register',UserView.as_view({'post':'create'})),
     path('v6/user',UserView.as_view({'get':'list'})),
-    path('v6/user/<int:pk>',UserView.as_view({'get':'retrieve'})),
+    path('v6/user/<int:pk>',UserView.as_view({'get':'retrieve','delete':'destroy'})),
     path('v6/team',TeamView.as_view({'get':'list','post':'create'})),
     path('v6/team/<int:pk>',TeamView.as_view({'get':'retrieve','delete':'destroy'})),
-    path('v6/enter_team/<int:pk>',EnterTeamView.as_view({'get':'retrieve','put':'partial_update'})),
+    path('v6/enter_team',EnterTeamView.as_view()),
     path('v6/quit_team/<int:pk>',QuitTeamView.as_view({'put':'partial_update'})),
     path('v6/reserve_start_time',ReserveStartTimeView.as_view({'get':'list'})),
     path('v6/reserve_start_time/<int:pk>',ReserveStartTimeView.as_view({'get':'retrieve','put':'update'})),
