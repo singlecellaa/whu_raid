@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'corsheaders',
     #local apps
     "app",
     # extension
@@ -51,7 +52,17 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = False  # 不允许所有来源
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",  # 允许来自 localhost:8080 的请求
+]
+
+CORS_ALLOW_CREDENTIALS = True  # 允许凭证
+
 
 ROOT_URLCONF = "whu_raid.urls"
 
