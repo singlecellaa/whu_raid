@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from app.view import RegisterView,LoginView,UserView,TeamView,EnterTeamView,QuitTeamView,ReserveStartTimeView,StartTimeView,PositionView
+from app.view import RegisterView,LoginView,UserView,TeamView,EnterTeamView,QuitTeamView,ReserveStartTimeView,StartTimeView,EndTimeView,PositionView
 urlpatterns = [
     path('v6/register',RegisterView.as_view({'post':'create'})),
     path('v6/login',LoginView.as_view()),
@@ -29,6 +29,8 @@ urlpatterns = [
     path('v6/reserve_start_time/<int:pk>',ReserveStartTimeView.as_view({'get':'retrieve','put':'update'})),
     path('v6/start_time',StartTimeView.as_view({'get':'list'})),
     path('v6/start_time/<int:pk>',StartTimeView.as_view({'get':'list','put':'update'})),
+    path('v6/end_time',EndTimeView.as_view({'get':'list'})),
+    path('v6/end_time/<int:pk>',EndTimeView.as_view({'get':'list','put':'update'})),
     path('v6/position',PositionView.as_view({'get':'list'})),
     path('v6/position/<int:pk>',PositionView.as_view({'get':'retrieve','put':'update'})),
 ]

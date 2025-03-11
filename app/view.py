@@ -154,13 +154,23 @@ class ReserveStartTimeView(ModelViewSet):
     
     
 class StartTimeSerializer(serializers.ModelSerializer):
-    start_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M')
+    start_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     class Meta:
         model = Team
         fields = ['id','start_time']
 class StartTimeView(ModelViewSet):
     queryset = Team.objects
     serializer_class = StartTimeSerializer
+    
+    
+class EndTimeSerializer(serializers.ModelSerializer):
+    end_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    class Meta:
+        model = Team
+        fields = ['id','end_time']
+class EndTimeView(ModelViewSet):
+    queryset = Team.objects
+    serializer_class = EndTimeSerializer
     
     
 class PositionSerializer(serializers.ModelSerializer):
