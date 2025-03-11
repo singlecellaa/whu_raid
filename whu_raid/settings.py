@@ -42,7 +42,29 @@ INSTALLED_APPS = [
     "app",
     # extension
     "rest_framework",
+    'rest_framework.authtoken'
 ]
+
+AUTH_USER_MODEL = 'app.User'
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # Add other authentication classes if needed (e.g., SessionAuthentication)
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        # Add other permission classes if needed
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        # Add other parser classes if needed
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        # Add other renderer classes if needed
+    ],
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

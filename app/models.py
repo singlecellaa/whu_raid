@@ -1,11 +1,13 @@
 from django.db import models
 from django.core.validators import MaxLengthValidator,MinLengthValidator
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
-class User(models.Model):
+class User(AbstractBaseUser,PermissionsMixin):
     name = models.CharField(max_length=10)
     student_id = models.CharField(max_length=13,validators=[MaxLengthValidator(13),MinLengthValidator(13)],unique=True)
     college = models.CharField(max_length=20)
     team = models.ForeignKey('Team',on_delete=models.SET_NULL,null=True,blank=True)
+    USERNAME_FIELD = 'student_id'
     
 class Team(models.Model):
     name = models.CharField(max_length=10)

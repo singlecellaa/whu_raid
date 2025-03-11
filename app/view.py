@@ -3,7 +3,52 @@ from rest_framework.views import APIView
 from rest_framework import serializers,status
 from .models import User,Team 
 from rest_framework.response import Response
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework.authtoken.models import Token
 
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id","name","student_id","college","password"]
+class RegisterView(ModelViewSet):
+    queryset = User.objects
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
+    def perform_create(self, serializer):
+        user = serializer.save()
+        user.set_password(serializer.validated_data['password'])
+        user.save()
+
+
+class LoginSerializer(serializers.Serializer):
+    student_id = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, attrs):
+        student_id = attrs.get('student_id')
+        password = attrs.get('password')
+        try:
+            user = User.objects.get(student_id=student_id)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("User not found")
+        if not user.check_password(password):
+            raise serializers.ValidationError("Incorrect password")
+        attrs['user'] = user
+        return attrs
+
+class LoginView(ObtainAuthToken):
+    serializer_class = LoginSerializer
+    permission_classes = [AllowAny]  # Allow login for anyone
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key}, status=status.HTTP_200_OK)
+    
+    
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -42,10 +87,10 @@ class TeamView(ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
+    
 class EnterTeamSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
     team_name = serializers.CharField()
-
 class EnterTeamView(APIView):
     def put(self, request, *args, **kwargs):
         serializer = EnterTeamSerializer(data=request.data)
@@ -107,6 +152,7 @@ class ReserveStartTimeView(ModelViewSet):
     queryset = Team.objects
     serializer_class = ReserveStartTimeSerializer
     
+    
 class StartTimeSerializer(serializers.ModelSerializer):
     start_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M')
     class Meta:
@@ -115,6 +161,7 @@ class StartTimeSerializer(serializers.ModelSerializer):
 class StartTimeView(ModelViewSet):
     queryset = Team.objects
     serializer_class = StartTimeSerializer
+    
     
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
