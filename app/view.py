@@ -113,7 +113,7 @@ class EnterTeamView(APIView):
             try:
                 user.team = team
                 user.save()
-                return Response({"message": "User added to team successfully"}, status=status.HTTP_200_OK)
+                return Response({"message": "User added to team successfully","team_id": team.id, "team_name": team.name }, status=status.HTTP_200_OK)
             except Exception as e:
                 return Response({"error": f"Failed to add user to team: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
