@@ -53,7 +53,7 @@ REST_FRAMEWORK = {
         # Add other authentication classes if needed (e.g., SessionAuthentication)
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
         # Add other permission classes if needed
     ],
     'DEFAULT_PARSER_CLASSES': [
