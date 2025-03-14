@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-k7*+7%=y4&mx88r558*3!mf&1$rchr#_r-s#m4k1&pr3x_h03@"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['api.whuraid.temp.ziqiang.net.cn']
 
 
 # Application definition
@@ -81,6 +81,7 @@ CORS_ALLOW_ALL_ORIGINS = False  # 不允许所有来源
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",  # 允许来自 localhost:8080 的请求
+    "https://luojiatactic.ziqiang.net.cn/"
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # 允许凭证
