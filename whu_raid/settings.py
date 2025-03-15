@@ -81,7 +81,7 @@ CORS_ALLOW_ALL_ORIGINS = False  # 不允许所有来源
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",  # 允许来自 localhost:8080 的请求
-    "https://luojiatactic.ziqiang.net.cn/"
+    # "https://luojiatactic.ziqiang.net.cn/"
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # 允许凭证
